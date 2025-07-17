@@ -9,6 +9,7 @@ import {
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import './PlaceForm.css';
+import Card from '../../shared/components/UIElements/Card';
 
 const Dummy_places = [
     {
@@ -27,7 +28,9 @@ const Dummy_places = [
 ];
 
 const UpdatePlace = () => {
+
   const [isLoading, setIsLoading] = useState(true);
+  
   const placeId = useParams().placeId;
 
   const [formState, inputHandler, setFormData] = useForm(
@@ -47,7 +50,8 @@ const UpdatePlace = () => {
   const identifiedPlace = Dummy_places.find(p => p.id === placeId);
 
   useEffect(() => {
-    setFormData(
+    if(identifiedPlace){
+      setFormData(
       {
         title: {
           value: identifiedPlace.title,
@@ -60,6 +64,8 @@ const UpdatePlace = () => {
       },
       true
     );
+  }
+
     setIsLoading(false);
   }, [setFormData, identifiedPlace]);
 
@@ -71,7 +77,9 @@ const UpdatePlace = () => {
   if (!identifiedPlace) {
     return (
       <div className="center">
-        <h2>Could not find place!</h2>
+        <Card>
+          <h2>Could not find place!</h2>
+        </Card>
       </div>
     );
   }
